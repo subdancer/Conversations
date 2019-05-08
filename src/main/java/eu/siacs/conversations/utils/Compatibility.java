@@ -1,6 +1,7 @@
 package eu.siacs.conversations.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -10,14 +11,18 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.support.annotation.BoolRes;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
 import eu.siacs.conversations.ui.SettingsActivity;
 import eu.siacs.conversations.ui.SettingsFragment;
+
+import static eu.siacs.conversations.services.EventReceiver.EXTRA_NEEDS_FOREGROUND_SERVICE;
 
 public class Compatibility {
 
@@ -37,6 +42,10 @@ public class Compatibility {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
+    public static boolean runsTwentyFour() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
+    }
+
     public static boolean twentyEight() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
     }
@@ -54,13 +63,27 @@ public class Compatibility {
             final PackageManager packageManager = context.getPackageManager();
             final ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
             return applicationInfo == null || applicationInfo.targetSdkVersion >= 26;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException | RuntimeException e) {
+            return true; //when in doubt…
+        }
+    }
+
+    private static boolean targetsTwentyFour(Context context) {
+        try {
+            final PackageManager packageManager = context.getPackageManager();
+            final ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
+            return applicationInfo == null || applicationInfo.targetSdkVersion >= 24;
+        } catch (PackageManager.NameNotFoundException | RuntimeException e) {
             return true; //when in doubt…
         }
     }
 
     public static boolean runsAndTargetsTwentySix(Context context) {
         return runsTwentySix() && targetsTwentySix(context);
+    }
+
+    public static boolean runsAndTargetsTwentyFour(Context context) {
+        return runsTwentyFour() && targetsTwentyFour(context);
     }
 
     public static boolean keepForegroundService(Context context) {
@@ -92,6 +115,19 @@ public class Compatibility {
                     }
                 }
             }
+        }
+    }
+
+    public static void startService(Context context, Intent intent) {
+        try {
+            if (Compatibility.runsAndTargetsTwentySix(context)) {
+                intent.putExtra(EXTRA_NEEDS_FOREGROUND_SERVICE, true);
+                ContextCompat.startForegroundService(context, intent);
+            } else {
+                context.startService(intent);
+            }
+        } catch (RuntimeException e) {
+            Log.d(Config.LOGTAG, context.getClass().getSimpleName()+" was unable to start service");
         }
     }
 }

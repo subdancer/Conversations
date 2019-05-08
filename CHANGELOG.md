@@ -1,5 +1,68 @@
 # Changelog
 
+### Version 2.5.1
+* minor bug fixes
+* Set own OMEMO devices to inactive after not seeing them for 14 days. (was 7 days)
+
+### Version 2.5.0
+* Added channel search via search.jabbercat.org
+* Reworked onboarding screens
+* Warn when trying to enter domain address or channel address in Add Contact dialog
+
+### Version 2.4.3
+* Fixed display of private messages sent from another client
+* Fixed backup creation on long time installations
+
+### Version 2.4.2
+* Fix image preview on older Android version
+
+### Version 2.4.1
+* Fixed crash in message view
+
+### Version 2.4.0
+* New Backup / Restore feature
+* Clearly distinguish between (private) group chats and (public) channels
+* Redesigned participants view for group chats and channels
+* Redesigned create new contact/group chat/channel flow in Start Conversation screen
+
+
+### Version 2.3.12
+* Fixed rare crash on start up
+* Fixed avatar not being refreshed in group chats
+
+### Version 2.3.11
+* Support for Android 9 'message style' notifications
+* OMEMO stability improvements
+* Added ability to destroy group chats
+* Do not show deleted files in media browser
+* Added 'Keep Original' as video quality choice
+
+### Version 2.3.10
+* lower minimum required Android version to 4.1
+* Synchronize group chat join/leaves across multiple clients
+* Fixed sending PGP encrypted messages from quick reply
+
+### Version 2.3.9
+* OMEMO stability improvements
+* Context menu when long pressing avatar in 1:1 chat
+
+### Version 2.3.8
+* make PEP avatars public to play nice with Prosody 0.11
+* Fixed re-sending failed files in group chats
+
+### Version 2.3.7
+* long press on 'allow' or 'add back' snackbar to bring up 'reject'
+* bug fixes for Android 9
+
+### Version 2.3.6
+* Improved handling of bookmark nicks
+* Show send PM menu entry in anonymous MUCs
+
+### Version 2.3.5
+* Fixed group chat mentions when nick ends in . (dot)
+* Fixed Conversations not asking for permissions after direct share
+* Fixed CVE-2018-18467
+
 ### Version 2.3.4
 * Fixed sending OMEMO files to ChatSecure
 
@@ -14,7 +77,7 @@
 ### Version 2.3.1
 * Stronger compression for video files
 * Use SNI on STARTTLS to fix gtalk
-* Fix Quite Hours on Android 8+
+* Fix Quiet Hours on Android 8+
 * Use Consistent Color Generation (XEP-0392)
 
 ### Version 2.3.0
@@ -464,7 +527,7 @@
 ### Version 1.7.2
 * decode PGP messages in background
 
-####Versrion 1.7.1
+### Version 1.7.1
 * performance improvements when opening a conversation
 
 ### Version 1.7.0

@@ -3,7 +3,6 @@
   <string name="action_settings">Pengaturan</string>
   <string name="action_add">Percakapan Baru</string>
   <string name="action_accounts">Pengaturan Akun</string>
-  <string name="action_end_conversation">Akhiri Percakapan</string>
   <string name="action_contact_details">Detil Kontak</string>
   <string name="action_secure">Amankan Percakapan</string>
   <string name="action_add_account">Tambah Akun</string>
@@ -99,7 +98,6 @@
   <string name="pref_never_send_crash_summary">Dengan mengirimkan kesalahan Anda membantu pengembangan Aplikasi Conversations</string>
   <string name="pref_confirm_messages">Konfirmasi Pesan</string>
   <string name="pref_ui_options">UI</string>
-  <string name="openpgp_error">OpenKeychain melaporkan kesalahan</string>
   <string name="accept">Terima</string>
   <string name="error">Sebuah kesalahan terjadi</string>
   <string name="your_account">Akun anda</string>
@@ -137,10 +135,8 @@
   <string name="mgmt_account_enable">Aktifkan Akun</string>
   <string name="mgmt_account_are_you_sure">Apakah Anda yakin.?</string>
   <string name="attach_record_voice">Rekam suara</string>
-  <string name="account_settings_jabber_id">Jabber ID</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">Password</string>
-  <string name="invalid_jid">Jabber ID tidak valid</string>
   <string name="error_out_of_memory">Memori habis. Gambar terlalu besar</string>
   <string name="server_info_show_more">Info Server</string>
   <string name="server_info_mam">XEP-0313: MAM</string>
@@ -206,8 +202,6 @@
   <string name="ignore">Abaikan</string>
   <string name="without_mutual_presence_updates"><b>Perhatian</b> Mengirim ini tanpa kehadiran sesama pembaruan bisa menyebabkan masalah tak terduga.\n\n<small>Pergi ke kontak untuk memverifikasi langganan kehadiran anda.</small></string>
   <string name="pref_expert_options_summary">Harap berhati-hati dengan ini</string>
-  <string name="title_activity_about">Tentang Conversations</string>
-  <string name="pref_about_conversations_summary">Build dan informasi lisensi</string>
   <string name="title_pref_quiet_hours">Waktu sunyi</string>
   <string name="title_pref_quiet_hours_start_time">Waktu mulai</string>
   <string name="title_pref_quiet_hours_end_time">Waktu selesai</string>
@@ -229,7 +223,6 @@
   <string name="account_details">Detil akun</string>
   <string name="confirm">Konfirmasi</string>
   <string name="try_again">Coba lagi</string>
-  <string name="conversations_foreground_service">Percakapan</string>
   <string name="pref_keep_foreground_service">Jaga layanan di latar depan</string>
   <string name="pref_keep_foreground_service_summary">Cegah sistem operasi mematikan koneksi</string>
   <string name="choose_file">Pilih berkas</string>
@@ -266,14 +259,11 @@
   <string name="outcast">Orang buangan</string>
   <string name="member">Member</string>
   <string name="advanced_mode">Mode lanjut</string>
-  <string name="grant_membership">Memberikan keanggotaan</string>
-  <string name="remove_membership">Cabut keanggotaan</string>
   <string name="grant_admin_privileges">Memberikan hak istimewa admin</string>
   <string name="remove_admin_privileges">Mencabut hak istimewa admin</string>
   <string name="could_not_change_affiliation">Tidak bisa mengubah afiliasi %s</string>
   <string name="ban_now">Tendang sekarang</string>
   <string name="could_not_change_role">Tidak dapat merumah role %s</string>
-  <string name="non_anonymous">Non Anonymous</string>
   <string name="you_are_not_participating">Anda tidak berpartisipasi</string>
   <string name="never">Tidak pernah</string>
   <string name="until_further_notice">Sampai pemberitahuan selanjutnya</string>
@@ -288,7 +278,6 @@
   <string name="pdf_document">Berkas PDF</string>
   <string name="apk">Apl Android</string>
   <string name="vcard">Kontak</string>
-  <string name="touch_to_open_conversations">Sentuh untuk membuka Conversations</string>
   <string name="avatar_has_been_published">Avatar telah diterbitkan!</string>
   <string name="sending_x_file">Mengirim %s</string>
   <string name="offering_x_file">Menawarkan %s</string>
@@ -346,7 +335,6 @@
   <string name="correct_message">Perbaiki pesan</string>
   <string name="send_corrected_message">Kirim perbaikan pesan</string>
   <string name="share_uri_with">Bagikan URI dengan...</string>
-  <string name="your_full_jid_will_be">Jabber ID anda akan seperti: %s</string>
   <string name="create_account">Buat Akun</string>
   <string name="pick_your_username">Pilih username anda</string>
   <string name="status_message">Status</string>

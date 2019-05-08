@@ -2,7 +2,6 @@ package eu.siacs.conversations.parser;
 
 import android.util.Log;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.PgpEngine;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.entities.Account;
-import eu.siacs.conversations.entities.Bookmark;
 import eu.siacs.conversations.entities.Contact;
 import eu.siacs.conversations.entities.Conversation;
 import eu.siacs.conversations.entities.Message;
@@ -99,7 +97,7 @@ public class PresenceParser extends AbstractParser implements
 									+mucOptions.getConversation().getJid().asBareJid()
 									+"' created. pushing default configuration");
 							mXmppConnectionService.pushConferenceConfiguration(mucOptions.getConversation(),
-									IqGenerator.defaultRoomConfiguration(),
+									IqGenerator.defaultChannelConfiguration(),
 									null);
 						}
 						if (mXmppConnectionService.getPgpEngine() != null) {
@@ -260,9 +258,6 @@ public class PresenceParser extends AbstractParser implements
 		final Contact contact = account.getRoster().getContact(from);
 		if (type == null) {
 			final String resource = from.isBareJid() ? "" : from.getResource();
-			if (contact.setPresenceName(packet.findChildContent("nick", Namespace.NICK))) {
-				mXmppConnectionService.getAvatarService().clear(contact);
-			}
 			Avatar avatar = Avatar.parsePresence(packet.findChild("x", "vcard-temp:x:update"));
 			if (avatar != null && (!contact.isSelf() || account.getAvatar() == null)) {
 				avatar.owner = from.asBareJid();
@@ -341,6 +336,9 @@ public class PresenceParser extends AbstractParser implements
 			}
 			mXmppConnectionService.onContactStatusChanged.onContactStatusChanged(contact, false);
 		} else if (type.equals("subscribe")) {
+			if (contact.setPresenceName(packet.findChildContent("nick", Namespace.NICK))) {
+				mXmppConnectionService.getAvatarService().clear(contact);
+			}
 			if (contact.getOption(Contact.Options.PREEMPTIVE_GRANT)) {
 				mXmppConnectionService.sendPresencePacket(account,
 						mPresenceGenerator.sendPresenceUpdatesTo(contact));

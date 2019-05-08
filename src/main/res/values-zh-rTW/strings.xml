@@ -3,7 +3,6 @@
   <string name="action_settings">設定</string>
   <string name="action_add">新對話</string>
   <string name="action_accounts">管理帳戶</string>
-  <string name="action_end_conversation">結束對話</string>
   <string name="action_contact_details">聯絡人詳情</string>
   <string name="action_secure">安全對話</string>
   <string name="action_add_account">新增帳戶</string>
@@ -68,7 +67,6 @@
   <string name="sharing_files_please_wait">正在分享檔案中，請稍候…</string>
   <string name="action_clear_history">清除歷史記錄</string>
   <string name="clear_conversation_history">清除會話記錄</string>
-  <string name="also_end_conversation">結束此會話以後</string>
   <string name="choose_presence">選擇設備</string>
   <string name="send_unencrypted_message">發送未加密的訊息</string>
   <string name="send_message">送訊息</string>
@@ -109,7 +107,6 @@
   <string name="pref_confirm_messages">確認訊息</string>
   <string name="pref_confirm_messages_summary">讓聯絡人知道它們的訊息已經收到以及讀取</string>
   <string name="pref_ui_options">UI</string>
-  <string name="openpgp_error">OpenKeychain 報告了一個錯誤</string>
   <string name="accept">接受</string>
   <string name="error">產生了一個錯誤</string>
   <string name="your_account">你的帳號</string>
@@ -154,11 +151,8 @@
   <string name="mgmt_account_are_you_sure">確定?</string>
   <string name="mgmt_account_delete_confirm_text">刪除帳號會導致聊天紀錄全部不見</string>
   <string name="attach_record_voice">錄音</string>
-  <string name="account_settings_jabber_id">Jabber ID</string>
-  <string name="block_jabber_id">封鎖 Jabber 識別碼</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">密碼</string>
-  <string name="invalid_jid">該 Jabber ID 無效</string>
   <string name="error_out_of_memory">空間不足。圖片過大</string>
   <string name="add_phone_book_text">是否添加 %s 到地址薄？</string>
   <string name="server_info_show_more">伺服器資訊</string>
@@ -202,7 +196,6 @@
   <string name="select">選擇</string>
   <string name="contact_already_exists">連絡人已存在</string>
   <string name="join">加入</string>
-  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">保存為書簽</string>
   <string name="delete_bookmark">刪除書簽</string>
   <string name="bookmark_already_exists">該書簽已存在</string>
@@ -238,8 +231,6 @@
   <string name="pref_allow_message_correction_summary">允許您的連絡人追回編輯他們的訊息</string>
   <string name="pref_expert_options">高級設置</string>
   <string name="pref_expert_options_summary">請謹慎使用</string>
-  <string name="title_activity_about">關於 Conversations</string>
-  <string name="pref_about_conversations_summary">編譯及許可證資訊</string>
   <string name="title_pref_quiet_hours">靜默時間段</string>
   <string name="title_pref_quiet_hours_start_time">開始時間</string>
   <string name="title_pref_quiet_hours_end_time">結束時間</string>
@@ -267,12 +258,8 @@
   <string name="account_details">帳戶詳情</string>
   <string name="confirm">確認</string>
   <string name="try_again">再試一遍</string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">保持前臺服務</string>
   <string name="pref_keep_foreground_service_summary">防止作業系統中斷你的連接</string>
-  <string name="pref_export_logs">匯出歷史記錄</string>
-  <string name="pref_export_logs_summary">將 conversations 的歷史日誌寫到 SD 卡</string>
-  <string name="notification_export_logs_title">正在將日誌寫入 SD 卡</string>
   <string name="choose_file">選檔案</string>
   <string name="receiving_x_file">接收中 %1$s (已完成 %2$d%%)</string>
   <string name="download_x_file">下載 %s</string>
@@ -310,16 +297,12 @@
   <string name="outcast">拋棄</string>
   <string name="member">成員</string>
   <string name="advanced_mode">高級模式</string>
-  <string name="grant_membership">已授予的成員</string>
-  <string name="remove_membership">吊銷的成員</string>
   <string name="grant_admin_privileges">授予管理員許可權</string>
   <string name="remove_admin_privileges">吊銷管理員許可權</string>
   <string name="could_not_change_affiliation">不能修改 %s 的從屬關係</string>
   <string name="ban_now">現在遮罩</string>
   <string name="could_not_change_role">不能修改 %s 的角色</string>
   <string name="members_only">私密，只有成員可以加入</string>
-  <string name="non_anonymous">非匿名</string>
-  <string name="moderated">版主</string>
   <string name="you_are_not_participating">您尚未參與</string>
   <string name="never">從不</string>
   <string name="until_further_notice">直到新的通知</string>
@@ -334,7 +317,6 @@
   <string name="pdf_document">PDF 文檔</string>
   <string name="apk">Android App</string>
   <string name="vcard">連絡人</string>
-  <string name="touch_to_open_conversations">輕觸打開 Conversations</string>
   <string name="avatar_has_been_published">頭像已經發佈！</string>
   <string name="sending_x_file">發送中 %s</string>
   <string name="offering_x_file">提供中 %s</string>
@@ -394,7 +376,6 @@
   <string name="captcha_required">需要驗證碼</string>
   <string name="captcha_hint">輸入上圖中的文字</string>
   <string name="certificate_chain_is_not_trusted">憑證連結不受信任</string>
-  <string name="jid_does_not_match_certificate">Jabber ID 與證書不匹配</string>
   <string name="action_renew_certificate">更新證書</string>
   <string name="error_fetching_omemo_key">獲取 OMEMO 金鑰錯誤！</string>
   <string name="verified_omemo_key_with_certificate">請用證書驗證 OMEMO 金鑰！</string>
@@ -417,7 +398,6 @@
   <string name="shared_images_with_x">跟 %s 分享的圖片</string>
   <string name="shared_text_with_x">跟 %s 分享的文字資料</string>
   <string name="sync_with_contacts">與連絡人同步</string>
-  <string name="sync_with_contacts_long">Conversations 會匹配你的 XMPP 花名冊與你的連絡人，以顯示他們的全名和頭像。\n\nConversations 只會讀取你的連絡人並在本地匹配，不會上傳到你的伺服器。\n\n現在將要詢問你是否給予訪問你連絡人的許可權。</string>
   <string name="notify_on_all_messages">為所有訊息顯示通知</string>
   <string name="notify_never">關閉通知</string>
   <string name="notify_paused">暫停通知</string>
@@ -438,8 +418,6 @@
   <string name="security_error_invalid_file_access">安全錯誤：檔案存取無效</string>
   <string name="no_application_to_share_uri">找不到可以分享網址(URI)的應用程式</string>
   <string name="share_uri_with">分享網址(URI)…</string>
-  <string name="magic_create_text">我們將會引導你完成在 conversations.im¹ 上註冊帳號的過程。\n當獲得了 conversations.im 提供的帳號以後，你可以通過添加使用其他提供商的好友的完整 Jabber ID 來與他們聯絡。</string>
-  <string name="your_full_jid_will_be">您完整的 Jabble ID 是：%s </string>
   <string name="create_account">創建帳戶</string>
   <string name="use_own_provider">使用我自己的服務端</string>
   <string name="pick_your_username">輸入您的用戶名</string>

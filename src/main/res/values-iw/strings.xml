@@ -3,7 +3,6 @@
   <string name="action_settings">הגדרות</string>
   <string name="action_add">שיחה חדשה</string>
   <string name="action_accounts">נהל חשבונות</string>
-  <string name="action_end_conversation">סיים שיחה זו</string>
   <string name="action_contact_details">פרטי איש קשר</string>
   <string name="action_secure">דיון מאובטח</string>
   <string name="action_add_account">הוסף חשבון</string>
@@ -65,7 +64,6 @@
   <string name="preparing_image">מכין תמונה לשליחה</string>
   <string name="action_clear_history">נקה היסטוריה</string>
   <string name="clear_conversation_history">נקה היסטוריית שיחה</string>
-  <string name="also_end_conversation">סיים את השיחה לאחר מכן</string>
   <string name="send_unencrypted_message">שלח הודעה בלתי מוצפנת</string>
   <string name="send_omemo_message">של הודעה בהצפנת OMEMO</string>
   <string name="send_pgp_message">שלח הודעה בהצפנת OpenPGP</string>
@@ -90,7 +88,6 @@
   <string name="pref_never_send_crash">לעולם אל תשלח דיווחי קריסה</string>
   <string name="pref_never_send_crash_summary">על ידי שליחת עקבות מחסנית אתה עוזר להתקדמות הפיתוח של Conversations</string>
   <string name="pref_confirm_messages">אשר הודעות</string>
-  <string name="openpgp_error">אפליקציית OpenKeychain דיווחה על שגיאה</string>
   <string name="accept">קבל</string>
   <string name="error">אירעה שגיאה</string>
   <string name="your_account">החשבון שלך</string>
@@ -129,10 +126,8 @@
   <string name="mgmt_account_enable">הפעל חשבון</string>
   <string name="mgmt_account_are_you_sure">האם אתה בטוח?</string>
   <string name="attach_record_voice">הקלט קול</string>
-  <string name="account_settings_jabber_id">מזהה Jabber</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">סיסמה</string>
-  <string name="invalid_jid">מזהה ה Jabber אינו תקין</string>
   <string name="error_out_of_memory">חסר זיכרון. תצלום גדול מדי</string>
   <string name="server_info_show_more">פרטי השרת</string>
   <string name="server_info_mam">XEP-0313: MAM - היסטוריית שרת</string>
@@ -198,8 +193,6 @@
   <string name="ignore">התעלם</string>
   <string name="without_mutual_presence_updates"><b>אזהרה:</b>שליחה ללא הרשאות עדכוני נוכחות הדדיות עלולה לגרום לתוצאות בלתי צפויות.\n\n<small>השתמש בתפריט \"פרטי משתמש\" ואשר עדכוני נוכחות</small></string>
   <string name="pref_expert_options_summary">נא להיזהר!</string>
-  <string name="title_activity_about">אודות Conversations</string>
-  <string name="pref_about_conversations_summary">אודות גרסה ורישיון </string>
   <string name="title_pref_quiet_hours">שעות שקטות</string>
   <string name="title_pref_quiet_hours_start_time">זמן התחלה</string>
   <string name="title_pref_quiet_hours_end_time">זמן סיום</string>
@@ -224,7 +217,6 @@
   <string name="try_again">נסה שוב</string>
   <string name="pref_keep_foreground_service">השאר שירות ב Foreground</string>
   <string name="pref_keep_foreground_service_summary">מונע ממערכת ההפעלה לנתק את החיבור לשרת</string>
-  <string name="notification_export_logs_title">מייצא logs לכרטיס זיכרון</string>
   <string name="choose_file">בחר קובץ</string>
   <string name="receiving_x_file">מקבל %1$s ( הושלם %2$d%% )</string>
   <string name="download_x_file">הורד %s</string>
@@ -259,16 +251,12 @@
   <string name="no_affiliation">אין שיוך</string>
   <string name="member">חבר בקבוצה</string>
   <string name="advanced_mode">מצב מתקדם</string>
-  <string name="grant_membership">הענק חברות בקבוצה</string>
-  <string name="remove_membership">בטל חברות בקבוצה</string>
   <string name="grant_admin_privileges">הענק הרשאות מנהל</string>
   <string name="remove_admin_privileges">שלול הרשאות מנהל</string>
   <string name="could_not_change_affiliation">לא ניתן לשנות את השיוך של %s</string>
   <string name="ban_now">חסום עכשיו</string>
   <string name="could_not_change_role">לא ניתן לשנות את התפקיד של %s</string>
   <string name="members_only">פרטי, חברים בלבד</string>
-  <string name="non_anonymous">לא-אנונימי</string>
-  <string name="moderated">Moderated</string>
   <string name="you_are_not_participating">אינך משתתף</string>
   <string name="never">לעולם לא</string>
   <string name="until_further_notice">עד אחרית הימים</string>
@@ -282,7 +270,6 @@
   <string name="pdf_document">מסמך PDF</string>
   <string name="apk">אפליקציית אנדרויד</string>
   <string name="vcard">איש קשר</string>
-  <string name="touch_to_open_conversations">לחץ כדי לפתוח את Conversations</string>
   <string name="avatar_has_been_published">תמונת הפרופיל פורסמה!</string>
   <string name="sending_x_file">שולח %s</string>
   <string name="offering_x_file">מציע %s</string>
@@ -329,7 +316,6 @@
   <string name="authenticate_with_certificate">השאר ריק כדי להזדהות בלי תעודה</string>
   <string name="captcha_required">דרוש טקסט Captcha</string>
   <string name="certificate_chain_is_not_trusted">שרשרת תעודה אינה מהימנה</string>
-  <string name="jid_does_not_match_certificate">אין התאמה בין מזהה Jabber לבין תעודה</string>
   <string name="action_renew_certificate">חידוש תעודה</string>
   <string name="error_fetching_omemo_key">שגיאה בתפיסת OMEMO!</string>
   <string name="pref_use_tor">התחבר דרך Tor</string>
@@ -348,5 +334,4 @@
   <string name="shared_file_with_x">שתף קובץ בעזרת %s</string>
   <string name="shared_image_with_x">שתף תמונה בעזרת %s</string>
   <string name="sync_with_contacts">סנכרן עם אנשי קשר</string>
-  <string name="sync_with_contacts_long">‏Conversations מבקשת להתאים את רשימת XMPP שלך עם אנשי הקשר שלך כדי להציג את השמות המלאים שלהם כולל אווטארים.\n\nConversations רק תקרא את אנשי הקשר שלך ותתאים אותם באופן מקומי מבלי להעלות אותם לשרת שלך.\n\nכעת אתה תתבקש להעניק הרשאה כדי לגשת להתקן שלך.</string>
 </resources>

@@ -14,6 +14,14 @@
         <item name="android:textSize">?TextSizeSubhead</item>
     </style>
 
+    <style name="TextAppearance.Conversations.Subhead.Bold" parent="TextAppearance.Conversations.Subhead">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Conversations.Subhead.Bold.Secondary" parent="TextAppearance.Conversations.Subhead.Bold">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
     <style name="TextAppearance.Conversations.Body2" parent="TextAppearance.AppCompat.Body2">
         <item name="android:textSize">?TextSizeBody2</item>
     </style>
@@ -21,6 +29,10 @@
     <style name="TextAppearance.Conversations.Body1" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textSize">?TextSizeBody1</item>
         <item name="android:textColorLink">?android:textColorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.Conversations.Body1.Warning" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">?color_warning</item>
     </style>
 
     <style name="TextAppearance.Conversations.Body1.Linkified" parent="TextAppearance.AppCompat.Body1">
@@ -55,6 +67,10 @@
         <item name="android:textSize">?TextSizeBody2</item>
     </style>
 
+    <style name="Widget.Conversations.Button.Borderless.Primary" parent="Widget.Conversations.Button.Borderless">
+        <item name="android:textColor">?colorAccent</item>
+    </style>
+
 
     <style name="TextAppearance.Conversations.Design.Hint" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">?TextSizeCaption</item>
@@ -66,6 +82,10 @@
 
     <style name="TextAppearance.Conversations.Body1.Secondary" parent="TextAppearance.Conversations.Body1">
         <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="TextAppearance.Conversations.Body1.Tertiary" parent="TextAppearance.Conversations.Body1">
+        <item name="android:textColor">?android:textColorTertiary</item>
     </style>
 
     <style name="TextAppearance.Conversations.Fingerprint" parent="TextAppearance.Conversations.Body1">
@@ -96,7 +116,11 @@
     </style>
 
     <style name="TextAppearance.Conversations.Caption.Warning" parent="TextAppearance.Conversations.Caption">
-        <item name="android:textColor">@color/red800</item>
+        <item name="android:textColor">@color/red_a700</item>
+    </style>
+
+    <style name="TextAppearance.Conversations.Caption.Warning.OnDark" parent="TextAppearance.Conversations.Caption">
+        <item name="android:textColor">@color/red_a100</item>
     </style>
 
     <style name="TextAppearance.Conversations.Caption.Highlight" parent="TextAppearance.Conversations.Caption">

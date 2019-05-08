@@ -9,8 +9,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,9 +50,9 @@ public class JoinConferenceDialog extends DialogFragment implements OnBackendCon
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.dialog_title_join_conference);
+		builder.setTitle(R.string.join_public_channel);
 		DialogJoinConferenceBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.dialog_join_conference, null, false);
-		DelayedHintHelper.setHint(R.string.conference_address_example, binding.jid);
+		DelayedHintHelper.setHint(R.string.channel_full_jid_example, binding.jid);
 		this.knownHostsAdapter = new KnownHostsAdapter(getActivity(), R.layout.simple_list_item);
 		binding.jid.setAdapter(knownHostsAdapter);
 		String prefilledJid = getArguments().getString(PREFILLED_JID_KEY);
@@ -64,6 +66,10 @@ public class JoinConferenceDialog extends DialogFragment implements OnBackendCon
 		AlertDialog dialog = builder.create();
 		dialog.show();
 		dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view -> mListener.onJoinDialogPositiveClick(dialog, binding.account, binding.jid, binding.bookmark.isChecked()));
+		binding.jid.setOnEditorActionListener((v, actionId, event) -> {
+			mListener.onJoinDialogPositiveClick(dialog, binding.account, binding.jid, binding.bookmark.isChecked());
+			return true;
+		});
 		return dialog;
 	}
 

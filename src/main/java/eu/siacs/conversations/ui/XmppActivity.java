@@ -9,6 +9,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
@@ -35,8 +36,8 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.BoolRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AlertDialog.Builder;
 import android.support.v7.app.AppCompatDelegate;
@@ -46,7 +47,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -55,7 +55,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.R;
@@ -70,9 +69,11 @@ import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.BarcodeProvider;
 import eu.siacs.conversations.services.XmppConnectionService;
 import eu.siacs.conversations.services.XmppConnectionService.XmppConnectionBinder;
+import eu.siacs.conversations.ui.service.EmojiService;
 import eu.siacs.conversations.ui.util.MenuDoubleTabUtil;
 import eu.siacs.conversations.ui.util.PresenceSelector;
 import eu.siacs.conversations.ui.util.SoftKeyboardUtils;
+import eu.siacs.conversations.utils.AccountUtils;
 import eu.siacs.conversations.utils.ExceptionHelper;
 import eu.siacs.conversations.utils.ThemeHelper;
 import eu.siacs.conversations.xmpp.OnKeyStatusUpdated;
@@ -88,8 +89,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 	protected static final int REQUEST_BATTERY_OP = 0x49ff;
 	public XmppConnectionService xmppConnectionService;
 	public boolean xmppConnectionServiceBound = false;
-
-	protected int mColorRed;
 
 	protected static final String FRAGMENT_TAG_DIALOG = "dialog";
 
@@ -217,7 +216,11 @@ public abstract class XmppActivity extends ActionBarActivity {
 	public void connectToBackend() {
 		Intent intent = new Intent(this, XmppConnectionService.class);
 		intent.setAction("ui");
-		startService(intent);
+		try {
+			startService(intent);
+		} catch (IllegalStateException e) {
+			Log.w(Config.LOGTAG,"unable to start service from "+getClass().getSimpleName());
+		}
 		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 	}
 
@@ -338,7 +341,10 @@ public abstract class XmppActivity extends ActionBarActivity {
 				startActivity(new Intent(this, SettingsActivity.class));
 				break;
 			case R.id.action_accounts:
-				startActivity(new Intent(this, ManageAccountActivity.class));
+				AccountUtils.launchManageAccounts(this);
+				break;
+			case R.id.action_account:
+				AccountUtils.launchManageAccount(this);
 				break;
 			case android.R.id.home:
 				finish();
@@ -387,10 +393,8 @@ public abstract class XmppActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		metrics = getResources().getDisplayMetrics();
 		ExceptionHelper.init(getApplicationContext());
+		new EmojiService(this).init();
 		this.isCameraFeatureAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
-
-		mColorRed = ContextCompat.getColor(this, R.color.red800);
-
 		this.mTheme = findTheme();
 		setTheme(this.mTheme);
 
@@ -722,6 +726,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 			SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
 			dialog.dismiss();
 		}));
+		dialog.setCanceledOnTouchOutside(false);
 		dialog.setOnDismissListener(dialog1 -> {
 			SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
         });
@@ -754,15 +759,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 		}
 	}
 
-	public int getWarningTextColor() {
-		return this.mColorRed;
-	}
-
-	public int getPixel(int dp) {
-		DisplayMetrics metrics = getResources().getDisplayMetrics();
-		return ((int) (dp * metrics.density));
-	}
-
 	public boolean copyTextToClipboard(String text, int labelResId) {
 		ClipboardManager mClipBoardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 		String label = getResources().getString(labelResId);
@@ -772,10 +768,6 @@ public abstract class XmppActivity extends ActionBarActivity {
 			return true;
 		}
 		return false;
-	}
-
-	protected boolean neverCompressPictures() {
-		return getPreferences().getString("picture_compression", getResources().getString(R.string.picture_compression)).equals("never");
 	}
 
 	protected boolean manuallyChangePresence() {
@@ -886,7 +878,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 			if (cancelPotentialWork(message, imageView)) {
 				imageView.setBackgroundColor(0xff333333);
 				imageView.setImageDrawable(null);
-				final BitmapWorkerTask task = new BitmapWorkerTask(this, imageView);
+				final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
 				final AsyncDrawable asyncDrawable = new AsyncDrawable(
 						getResources(), null, task);
 				imageView.setImageDrawable(asyncDrawable);
@@ -937,11 +929,9 @@ public abstract class XmppActivity extends ActionBarActivity {
 
 	static class BitmapWorkerTask extends AsyncTask<Message, Void, Bitmap> {
 		private final WeakReference<ImageView> imageViewReference;
-		private final WeakReference<XmppActivity> activity;
 		private Message message = null;
 
-		private BitmapWorkerTask(XmppActivity activity, ImageView imageView) {
-			this.activity = new WeakReference<>(activity);
+		private BitmapWorkerTask(ImageView imageView) {
 			this.imageViewReference = new WeakReference<>(imageView);
 		}
 
@@ -952,7 +942,7 @@ public abstract class XmppActivity extends ActionBarActivity {
 			}
 			message = params[0];
 			try {
-				XmppActivity activity = this.activity.get();
+				final XmppActivity activity = find(imageViewReference);
 				if (activity != null && activity.xmppConnectionService != null) {
 					return activity.xmppConnectionService.getFileBackend().getThumbnail(message, (int) (activity.metrics.density * 288), false);
 				} else {
@@ -986,5 +976,21 @@ public abstract class XmppActivity extends ActionBarActivity {
 		private BitmapWorkerTask getBitmapWorkerTask() {
 			return bitmapWorkerTaskReference.get();
 		}
+	}
+
+	public static XmppActivity find(@NonNull  WeakReference<ImageView> viewWeakReference) {
+		final View view = viewWeakReference.get();
+		return view == null ? null : find(view);
+	}
+
+	public static XmppActivity find(@NonNull final View view) {
+		Context context = view.getContext();
+		while (context instanceof ContextWrapper) {
+			if (context instanceof XmppActivity) {
+				return (XmppActivity) context;
+			}
+			context = ((ContextWrapper)context).getBaseContext();
+		}
+		return null;
 	}
 }

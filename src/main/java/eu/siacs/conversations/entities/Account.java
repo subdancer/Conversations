@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -21,12 +22,14 @@ import eu.siacs.conversations.R;
 import eu.siacs.conversations.crypto.PgpDecryptionService;
 import eu.siacs.conversations.crypto.axolotl.AxolotlService;
 import eu.siacs.conversations.crypto.axolotl.XmppAxolotlSession;
+import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.services.XmppConnectionService;
+import eu.siacs.conversations.utils.UIHelper;
 import eu.siacs.conversations.utils.XmppUri;
 import eu.siacs.conversations.xmpp.XmppConnection;
 import rocks.xmpp.addr.Jid;
 
-public class Account extends AbstractEntity {
+public class Account extends AbstractEntity implements AvatarService.Avatarable {
 
     public static final String TABLENAME = "accounts";
 
@@ -54,6 +57,7 @@ public class Account extends AbstractEntity {
     public static final int OPTION_REQUIRES_ACCESS_MODE_CHANGE = 5;
     public static final int OPTION_LOGGED_IN_SUCCESSFULLY = 6;
     public static final int OPTION_HTTP_UPLOAD_AVAILABLE = 7;
+    public static final int OPTION_UNVERIFIED = 8;
     private static final String KEY_PGP_SIGNATURE = "pgp_signature";
     private static final String KEY_PGP_ID = "pgp_id";
     public final HashSet<Pair<String, String>> inProgressDiscoFetches = new HashSet<>();
@@ -66,6 +70,7 @@ public class Account extends AbstractEntity {
     protected String password;
     protected int options = 0;
     protected State status = State.OFFLINE;
+    private State lastErrorStatus = State.OFFLINE;
     protected String resource;
     protected String avatar;
     protected String hostname = null;
@@ -262,8 +267,15 @@ public class Account extends AbstractEntity {
         }
     }
 
+    public State getLastErrorStatus() {
+        return this.lastErrorStatus;
+    }
+
     public void setStatus(final State status) {
         this.status = status;
+        if (status.isError || status == State.ONLINE) {
+            this.lastErrorStatus = status;
+        }
     }
 
     public State getTrueStatus() {
@@ -463,6 +475,17 @@ public class Account extends AbstractEntity {
         this.bookmarks = bookmarks;
     }
 
+    public Set<Jid> getBookmarkedJids() {
+        final Set<Jid> jids = new HashSet<>();
+        for(final Bookmark bookmark : this.bookmarks) {
+            final Jid jid = bookmark.getJid();
+            if (jid != null) {
+                jids.add(jid.asBareJid());
+            }
+        }
+        return jids;
+    }
+
     public boolean hasBookmarkFor(final Jid conferenceJid) {
         return getBookmark(conferenceJid) != null;
     }
@@ -556,6 +579,11 @@ public class Account extends AbstractEntity {
 
     public boolean isOnlineAndConnected() {
         return this.getStatus() == State.ONLINE && this.getXmppConnection() != null;
+    }
+
+    @Override
+    public int getAvatarBackgroundColor() {
+        return UIHelper.getColorForName(jid.asBareJid().toString());
     }
 
     public enum State {

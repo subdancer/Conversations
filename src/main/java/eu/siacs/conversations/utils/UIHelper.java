@@ -271,8 +271,6 @@ public class UIHelper {
 				case Transferable.STATUS_OFFER_CHECK_FILESIZE:
 					return new Pair<>(context.getString(R.string.x_file_offered_for_download,
 							getFileDescriptionString(context, message)), true);
-				case Transferable.STATUS_DELETED:
-					return new Pair<>(context.getString(R.string.file_deleted), true);
 				case Transferable.STATUS_FAILED:
 					return new Pair<>(context.getString(R.string.file_transmission_failed), true);
 				case Transferable.STATUS_UPLOADING:
@@ -286,13 +284,17 @@ public class UIHelper {
 				default:
 					return new Pair<>("", false);
 			}
+		} else if (message.isFileOrImage() && message.isDeleted()) {
+			return new Pair<>(context.getString(R.string.file_deleted), true);
 		} else if (message.getEncryption() == Message.ENCRYPTION_PGP) {
 			return new Pair<>(context.getString(R.string.pgp_message), true);
 		} else if (message.getEncryption() == Message.ENCRYPTION_DECRYPTION_FAILED) {
 			return new Pair<>(context.getString(R.string.decryption_failed), true);
 		} else if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE) {
 			return new Pair<>(context.getString(R.string.not_encrypted_for_this_device), true);
-		} else if (message.getType() == Message.TYPE_FILE || message.getType() == Message.TYPE_IMAGE) {
+		} else if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL_FAILED) {
+			return new Pair<>(context.getString(R.string.omemo_decryption_failed), true);
+		} else if (message.isFileOrImage()) {
 			return new Pair<>(getFileDescriptionString(context, message), true);
 		} else {
 			final String body = MessageUtils.filterLtrRtl(message.getBody());
@@ -312,6 +314,9 @@ public class UIHelper {
 				SpannableStringBuilder builder = new SpannableStringBuilder();
 				for (CharSequence l : CharSequenceUtils.split(styledBody, '\n')) {
 					if (l.length() > 0) {
+						if (l.toString().equals("```")) {
+							continue;
+						}
 						char first = l.charAt(0);
 						if ((first != '>' || !isPositionFollowedByQuoteableCharacter(l, 0)) && first != '\u00bb') {
 							CharSequence line = CharSequenceUtils.trim(l);
@@ -480,6 +485,8 @@ public class UIHelper {
 			return context.getString(R.string.apk);
 		} else if (mime.contains("vcard")) {
 			return context.getString(R.string.vcard);
+		} else if (mime.equals("application/epub+zip") || mime.equals("application/vnd.amazon.mobi8-ebook")) {
+			return context.getString(R.string.ebook);
 		} else {
 			return mime;
 		}
@@ -563,6 +570,16 @@ public class UIHelper {
 				return new ListItem.Tag(context.getString(R.string.presence_dnd), 0xfff44336);
 			default:
 				return new ListItem.Tag(context.getString(R.string.presence_online), 0xff259b24);
+		}
+	}
+
+	public static String filesizeToString(long size) {
+		if (size > (1.5 * 1024 * 1024)) {
+			return Math.round(size * 1f / (1024 * 1024)) + " MiB";
+		} else if (size >= 1024) {
+			return Math.round(size * 1f / 1024) + " KiB";
+		} else {
+			return size + " B";
 		}
 	}
 }

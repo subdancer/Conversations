@@ -63,7 +63,8 @@ public final class CryptoHelper {
     }
 
     public static String pronounceable(SecureRandom random) {
-        char[] output = new char[random.nextInt(4) * 2 + 5];
+        final int rand = random.nextInt(4);
+        char[] output = new char[rand * 2 + (5 - rand)];
         boolean vowel = random.nextBoolean();
         for (int i = 0; i < output.length; ++i) {
             output[i] = vowel ? VOWELS[random.nextInt(VOWELS.length)] : CONSONANTS[random.nextInt(CONSONANTS.length)];
@@ -264,6 +265,7 @@ public final class CryptoHelper {
                 return R.string.encryption_choice_otr;
             case Message.ENCRYPTION_AXOLOTL:
             case Message.ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE:
+            case Message.ENCRYPTION_AXOLOTL_FAILED:
                 return R.string.encryption_choice_omemo;
             case Message.ENCRYPTION_NONE:
                 return R.string.encryption_choice_unencrypted;

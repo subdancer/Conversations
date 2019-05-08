@@ -2,11 +2,16 @@ package eu.siacs.conversations.entities;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
+
+import org.json.JSONException;
 
 import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -15,8 +20,7 @@ import java.util.Set;
 
 import eu.siacs.conversations.Config;
 import eu.siacs.conversations.crypto.axolotl.FingerprintStatus;
-import eu.siacs.conversations.http.AesGcmURLStreamHandler;
-import eu.siacs.conversations.ui.adapter.MessageAdapter;
+import eu.siacs.conversations.services.AvatarService;
 import eu.siacs.conversations.utils.CryptoHelper;
 import eu.siacs.conversations.utils.Emoticons;
 import eu.siacs.conversations.utils.GeoHelper;
@@ -25,7 +29,7 @@ import eu.siacs.conversations.utils.MimeUtils;
 import eu.siacs.conversations.utils.UIHelper;
 import rocks.xmpp.addr.Jid;
 
-public class Message extends AbstractEntity {
+public class Message extends AbstractEntity implements AvatarService.Avatarable  {
 
 	public static final String TABLENAME = "messages";
 
@@ -45,12 +49,14 @@ public class Message extends AbstractEntity {
 	public static final int ENCRYPTION_DECRYPTION_FAILED = 4;
 	public static final int ENCRYPTION_AXOLOTL = 5;
 	public static final int ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE = 6;
+	public static final int ENCRYPTION_AXOLOTL_FAILED = 7;
 
 	public static final int TYPE_TEXT = 0;
 	public static final int TYPE_IMAGE = 1;
 	public static final int TYPE_FILE = 2;
 	public static final int TYPE_STATUS = 3;
 	public static final int TYPE_PRIVATE = 4;
+	public static final int TYPE_PRIVATE_FILE = 5;
 
 	public static final String CONVERSATION = "conversationUuid";
 	public static final String COUNTERPART = "counterpart";
@@ -71,6 +77,7 @@ public class Message extends AbstractEntity {
 	public static final String ERROR_MESSAGE = "errorMsg";
 	public static final String READ_BY_MARKERS = "readByMarkers";
 	public static final String MARKABLE = "markable";
+	public static final String DELETED = "deleted";
 	public static final String ME_COMMAND = "/me ";
 
 	public static final String ERROR_MESSAGE_CANCELLED = "eu.siacs.conversations.cancelled";
@@ -86,9 +93,10 @@ public class Message extends AbstractEntity {
 	protected int encryption;
 	protected int status;
 	protected int type;
+	protected boolean deleted = false;
 	protected boolean carbon = false;
 	protected boolean oob = false;
-	protected String edited = null;
+	protected List<Edited> edits = new ArrayList<>();
 	protected String relativeFilePath;
 	protected boolean read = true;
 	protected String remoteMsgId = null;
@@ -136,6 +144,7 @@ public class Message extends AbstractEntity {
 				false,
 				null,
 				null,
+				false,
 				false);
 	}
 
@@ -145,7 +154,7 @@ public class Message extends AbstractEntity {
 	                final String remoteMsgId, final String relativeFilePath,
 	                final String serverMsgId, final String fingerprint, final boolean read,
 	                final String edited, final boolean oob, final String errorMessage, final Set<ReadByMarker> readByMarkers,
-	                final boolean markable) {
+	                final boolean markable, final boolean deleted) {
 		this.conversation = conversation;
 		this.uuid = uuid;
 		this.conversationUuid = conversationUUid;
@@ -162,43 +171,20 @@ public class Message extends AbstractEntity {
 		this.serverMsgId = serverMsgId;
 		this.axolotlFingerprint = fingerprint;
 		this.read = read;
-		this.edited = edited;
+		this.edits = Edited.fromJson(edited);
 		this.oob = oob;
 		this.errorMessage = errorMessage;
-		this.readByMarkers = readByMarkers == null ? new HashSet<ReadByMarker>() : readByMarkers;
+		this.readByMarkers = readByMarkers == null ? new HashSet<>() : readByMarkers;
 		this.markable = markable;
+		this.deleted = deleted;
 	}
 
 	public static Message fromCursor(Cursor cursor, Conversation conversation) {
-		Jid jid;
-		try {
-			String value = cursor.getString(cursor.getColumnIndex(COUNTERPART));
-			if (value != null) {
-				jid = Jid.of(value);
-			} else {
-				jid = null;
-			}
-		} catch (IllegalArgumentException e) {
-			jid = null;
-		} catch (IllegalStateException e) {
-			return null; // message too long?
-		}
-		Jid trueCounterpart;
-		try {
-			String value = cursor.getString(cursor.getColumnIndex(TRUE_COUNTERPART));
-			if (value != null) {
-				trueCounterpart = Jid.of(value);
-			} else {
-				trueCounterpart = null;
-			}
-		} catch (IllegalArgumentException e) {
-			trueCounterpart = null;
-		}
 		return new Message(conversation,
 				cursor.getString(cursor.getColumnIndex(UUID)),
 				cursor.getString(cursor.getColumnIndex(CONVERSATION)),
-				jid,
-				trueCounterpart,
+				fromString(cursor.getString(cursor.getColumnIndex(COUNTERPART))),
+				fromString(cursor.getString(cursor.getColumnIndex(TRUE_COUNTERPART))),
 				cursor.getString(cursor.getColumnIndex(BODY)),
 				cursor.getLong(cursor.getColumnIndex(TIME_SENT)),
 				cursor.getInt(cursor.getColumnIndex(ENCRYPTION)),
@@ -214,7 +200,19 @@ public class Message extends AbstractEntity {
 				cursor.getInt(cursor.getColumnIndex(OOB)) > 0,
 				cursor.getString(cursor.getColumnIndex(ERROR_MESSAGE)),
 				ReadByMarker.fromJsonString(cursor.getString(cursor.getColumnIndex(READ_BY_MARKERS))),
-				cursor.getInt(cursor.getColumnIndex(MARKABLE)) > 0);
+				cursor.getInt(cursor.getColumnIndex(MARKABLE)) > 0,
+				cursor.getInt(cursor.getColumnIndex(DELETED)) > 0);
+	}
+
+	private static Jid fromString(String value) {
+		try {
+			if (value != null) {
+				return Jid.of(value);
+			}
+		} catch (IllegalArgumentException e) {
+			return null;
+		}
+		return null;
 	}
 
 	public static Message createStatusMessage(Conversation conversation, String body) {
@@ -258,11 +256,16 @@ public class Message extends AbstractEntity {
 		values.put(SERVER_MSG_ID, serverMsgId);
 		values.put(FINGERPRINT, axolotlFingerprint);
 		values.put(READ, read ? 1 : 0);
-		values.put(EDITED, edited);
+		try {
+			values.put(EDITED, Edited.toJson(edits));
+		} catch (JSONException e) {
+			Log.e(Config.LOGTAG,"error persisting json for edits",e);
+		}
 		values.put(OOB, oob ? 1 : 0);
 		values.put(ERROR_MESSAGE, errorMessage);
 		values.put(READ_BY_MARKERS, ReadByMarker.toJson(readByMarkers).toString());
 		values.put(MARKABLE, markable ? 1 : 0);
+		values.put(DELETED, deleted ? 1 : 0);
 		return values;
 	}
 
@@ -290,7 +293,7 @@ public class Message extends AbstractEntity {
 				return null;
 			} else {
 				return this.conversation.getAccount().getRoster()
-						.getContactFromRoster(this.trueCounterpart);
+						.getContactFromContactList(this.trueCounterpart);
 			}
 		}
 	}
@@ -379,6 +382,14 @@ public class Message extends AbstractEntity {
 		return this.read;
 	}
 
+	public boolean isDeleted() {
+		return this.deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public void markRead() {
 		this.read = true;
 	}
@@ -415,12 +426,12 @@ public class Message extends AbstractEntity {
 		this.carbon = carbon;
 	}
 
-	public void setEdited(String edited) {
-		this.edited = edited;
+	public void putEdited(String edited, String serverMsgId) {
+		this.edits.add(new Edited(edited, serverMsgId));
 	}
 
 	public boolean edited() {
-		return this.edited != null;
+		return this.edits.size() > 0;
 	}
 
 	public void setTrueCounterpart(Jid trueCounterpart) {
@@ -470,9 +481,11 @@ public class Message extends AbstractEntity {
 		return Collections.unmodifiableSet(this.readByMarkers);
 	}
 
-	public boolean similar(Message message) {
-		if (type != TYPE_PRIVATE && this.serverMsgId != null && message.getServerMsgId() != null) {
-			return this.serverMsgId.equals(message.getServerMsgId());
+	boolean similar(Message message) {
+		if (!isPrivateMessage() && this.serverMsgId != null && message.getServerMsgId() != null) {
+			return this.serverMsgId.equals(message.getServerMsgId()) || Edited.wasPreviouslyEditedServerMsgId(edits, message.getServerMsgId());
+		} else if (Edited.wasPreviouslyEditedServerMsgId(edits, message.getServerMsgId())) {
+			return true;
 		} else if (this.body == null || this.counterpart == null) {
 			return false;
 		} else {
@@ -487,7 +500,7 @@ public class Message extends AbstractEntity {
 			final boolean matchingCounterpart = this.counterpart.equals(message.getCounterpart());
 			if (message.getRemoteMsgId() != null) {
 				final boolean hasUuid = CryptoHelper.UUID_PATTERN.matcher(message.getRemoteMsgId()).matches();
-				if (hasUuid && this.edited != null && matchingCounterpart && this.edited.equals(message.getRemoteMsgId())) {
+				if (hasUuid && matchingCounterpart && Edited.wasPreviouslyEditedRemoteMsgId(edits, message.getRemoteMsgId())) {
 					return true;
 				}
 				return (message.getRemoteMsgId().equals(this.remoteMsgId) || message.getRemoteMsgId().equals(this.uuid))
@@ -604,6 +617,15 @@ public class Message extends AbstractEntity {
 		return this.counterparts;
 	}
 
+	@Override
+	public int getAvatarBackgroundColor() {
+		if (type == Message.TYPE_STATUS && getCounterparts() != null && getCounterparts().size() > 1) {
+			return Color.TRANSPARENT;
+		} else {
+			return UIHelper.getColorForName(UIHelper.getMessageDisplayName(this));
+		}
+	}
+
 	public static class MergeSeparator {
 	}
 
@@ -660,7 +682,7 @@ public class Message extends AbstractEntity {
 
 	public boolean trusted() {
 		Contact contact = this.getContact();
-		return status > STATUS_RECEIVED || (contact != null && (contact.showInRoster() || contact.isSelf()));
+		return status > STATUS_RECEIVED || (contact != null && (contact.showInContactList() || contact.isSelf()));
 	}
 
 	public boolean fixCounterpart() {
@@ -688,7 +710,11 @@ public class Message extends AbstractEntity {
 	}
 
 	public String getEditedId() {
-		return edited;
+		if (edits.size() > 0) {
+			return edits.get(edits.size() - 1).getEditedId();
+		} else {
+			throw new IllegalStateException("Attempting to store unedited message");
+		}
 	}
 
 	public void setOob(boolean isOob) {
@@ -798,8 +824,12 @@ public class Message extends AbstractEntity {
 		this.mPreviousMessage = null;
 	}
 
+	public boolean isPrivateMessage() {
+		return type == TYPE_PRIVATE || type == TYPE_PRIVATE_FILE;
+	}
+
 	public boolean isFileOrImage() {
-		return type == TYPE_FILE || type == TYPE_IMAGE;
+		return type == TYPE_FILE || type == TYPE_IMAGE || type == TYPE_PRIVATE_FILE;
 	}
 
 	public boolean hasFileOnRemoteHost() {
@@ -871,9 +901,36 @@ public class Message extends AbstractEntity {
 		if (encryption == ENCRYPTION_DECRYPTED || encryption == ENCRYPTION_DECRYPTION_FAILED) {
 			return ENCRYPTION_PGP;
 		}
-		if (encryption == ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE) {
+		if (encryption == ENCRYPTION_AXOLOTL_NOT_FOR_THIS_DEVICE || encryption == ENCRYPTION_AXOLOTL_FAILED) {
 			return ENCRYPTION_AXOLOTL;
 		}
 		return encryption;
+	}
+
+	public static boolean configurePrivateMessage(final Message message) {
+		return configurePrivateMessage(message, false);
+	}
+
+	public static boolean configurePrivateFileMessage(final Message message) {
+		return configurePrivateMessage(message, true);
+	}
+
+	private static boolean configurePrivateMessage(final Message message, final boolean isFile) {
+		final Conversation conversation;
+		if (message.conversation instanceof Conversation) {
+			conversation = (Conversation) message.conversation;
+		} else {
+			return false;
+		}
+		if (conversation.getMode() == Conversation.MODE_MULTI) {
+			final Jid nextCounterpart = conversation.getNextCounterpart();
+			if (nextCounterpart != null) {
+				message.setCounterpart(nextCounterpart);
+				message.setTrueCounterpart(conversation.getMucOptions().getTrueCounterpart(nextCounterpart));
+				message.setType(isFile ? Message.TYPE_PRIVATE_FILE : Message.TYPE_PRIVATE);
+				return true;
+			}
+		}
+		return false;
 	}
 }

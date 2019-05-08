@@ -127,16 +127,23 @@ public class IqGenerator extends AbstractGenerator {
 
 	public IqPacket publishNick(String nick) {
 		final Element item = new Element("item");
-		item.addChild("nick", "http://jabber.org/protocol/nick").setContent(nick);
-		return publish("http://jabber.org/protocol/nick", item);
+		item.addChild("nick", Namespace.NICK).setContent(nick);
+		return publish(Namespace.NICK, item);
 	}
 
-	public IqPacket publishAvatar(Avatar avatar) {
+	public IqPacket deleteNode(String node) {
+		IqPacket packet = new IqPacket(IqPacket.TYPE.SET);
+		final Element pubsub = packet.addChild("pubsub", Namespace.PUBSUB_OWNER);
+		pubsub.addChild("delete").setAttribute("node",node);
+		return packet;
+	}
+
+	public IqPacket publishAvatar(Avatar avatar, Bundle options) {
 		final Element item = new Element("item");
 		item.setAttribute("id", avatar.sha1sum);
 		final Element data = item.addChild("data", "urn:xmpp:avatar:data");
 		data.setContent(avatar.image);
-		return publish("urn:xmpp:avatar:data", item);
+		return publish("urn:xmpp:avatar:data", item, options);
 	}
 
 	public IqPacket publishElement(final String namespace,final Element element, final Bundle options) {
@@ -146,7 +153,7 @@ public class IqGenerator extends AbstractGenerator {
 		return publish(namespace, item, options);
 	}
 
-	public IqPacket publishAvatarMetadata(final Avatar avatar) {
+	public IqPacket publishAvatarMetadata(final Avatar avatar, final Bundle options) {
 		final Element item = new Element("item");
 		item.setAttribute("id", avatar.sha1sum);
 		final Element metadata = item
@@ -157,7 +164,7 @@ public class IqGenerator extends AbstractGenerator {
 		info.setAttribute("height", avatar.height);
 		info.setAttribute("width", avatar.height);
 		info.setAttribute("type", avatar.type);
-		return publish("urn:xmpp:avatar:metadata", item);
+		return publish("urn:xmpp:avatar:metadata", item, options);
 	}
 
 	public IqPacket retrievePepAvatar(final Avatar avatar) {
@@ -408,7 +415,7 @@ public class IqGenerator extends AbstractGenerator {
 		register.setFrom(account.getJid().asBareJid());
 		register.setTo(Jid.of(account.getServer()));
 		register.setId(id);
-		Element query = register.query("jabber:iq:register");
+		Element query = register.query(Namespace.REGISTER);
 		if (data != null) {
 			query.addChild(data);
 		}
@@ -449,12 +456,27 @@ public class IqGenerator extends AbstractGenerator {
 		return packet;
 	}
 
-	public static Bundle defaultRoomConfiguration() {
+	public static Bundle defaultGroupChatConfiguration() {
 		Bundle options = new Bundle();
 		options.putString("muc#roomconfig_persistentroom", "1");
 		options.putString("muc#roomconfig_membersonly", "1");
 		options.putString("muc#roomconfig_publicroom", "0");
 		options.putString("muc#roomconfig_whois", "anyone");
+		options.putString("muc#roomconfig_changesubject", "0");
+		options.putString("muc#roomconfig_allowinvites", "0");
+		options.putString("muc#roomconfig_enablearchiving", "1"); //prosody
+		options.putString("mam", "1"); //ejabberd community
+		options.putString("muc#roomconfig_mam","1"); //ejabberd saas
+		return options;
+	}
+
+	public static Bundle defaultChannelConfiguration() {
+		Bundle options = new Bundle();
+		options.putString("muc#roomconfig_persistentroom", "1");
+		options.putString("muc#roomconfig_membersonly", "0");
+		options.putString("muc#roomconfig_publicroom", "1");
+		options.putString("muc#roomconfig_whois", "moderators");
+		options.putString("muc#roomconfig_changesubject", "0");
 		options.putString("muc#roomconfig_enablearchiving", "1"); //prosody
 		options.putString("mam", "1"); //ejabberd community
 		options.putString("muc#roomconfig_mam","1"); //ejabberd saas

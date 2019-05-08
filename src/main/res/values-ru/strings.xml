@@ -3,7 +3,6 @@
   <string name="action_settings">Настройки</string>
   <string name="action_add">Новая беседа</string>
   <string name="action_accounts">Управление аккаунтами</string>
-  <string name="action_end_conversation">Закончить текущую беседу</string>
   <string name="action_contact_details">Сведения о контакте</string>
   <string name="action_muc_details">Подробности конференции</string>
   <string name="action_secure">Защищённая беседа</string>
@@ -79,7 +78,6 @@
   <string name="clear_histor_msg">Вы хотите удалить все сообщения в этой беседе?\n\n<b>Предупреждение:</b> Данная операция не повлияет на сообщения, хранящиеся на других устройствах или серверах.</string>
   <string name="delete_file_dialog">Удалить файл</string>
   <string name="delete_file_dialog_msg">Вы уверены, что хотите удалить этот файл?\n\n<b>Предупреждение:</b> Данная операция не удалит копии этого файла, хранящиеся на других устройствах или серверах.</string>
-  <string name="also_end_conversation">Закончить эту беседу впоследствии</string>
   <string name="choose_presence">Выберите устройство</string>
   <string name="send_unencrypted_message">Нешифрованное сообщение</string>
   <string name="send_message">Сообщение</string>
@@ -120,7 +118,6 @@
   <string name="pref_confirm_messages">Отчёты о получении</string>
   <string name="pref_confirm_messages_summary">Позволяет вашим контактам видеть когда вы получили и прочитали их сообщения</string>
   <string name="pref_ui_options">Интерфейс</string>
-  <string name="openpgp_error">Возникла ошибка в OpenKeychain</string>
   <string name="accept">Принять</string>
   <string name="error">Произошла ошибка</string>
   <string name="recording_error">Ошибка</string>
@@ -168,11 +165,8 @@
   <string name="mgmt_account_are_you_sure">Вы уверены?</string>
   <string name="mgmt_account_delete_confirm_text">Если вы удалите аккаунт, будет потеряна вся история переписки.</string>
   <string name="attach_record_voice">Запись голоса</string>
-  <string name="account_settings_jabber_id">Jabber ID</string>
-  <string name="block_jabber_id">Заблокировать Jabber ID</string>
   <string name="account_settings_example_jabber_id">username@example.com</string>
   <string name="password">Пароль</string>
-  <string name="invalid_jid">Недопустимый Jabber ID</string>
   <string name="error_out_of_memory">Недостаточно памяти. Изображение слишком большое</string>
   <string name="add_phone_book_text">Вы хотите добавить %s в вашу адресную книгу?</string>
   <string name="server_info_show_more">Информация о сервере</string>
@@ -207,12 +201,8 @@
   <string name="fetching_keys">Получение ключей…</string>
   <string name="done">Готово</string>
   <string name="decrypt">Расшифровать</string>
-  <string name="conferences">Конференции</string>
   <string name="search">Поиск</string>
-  <string name="dialog_title_create_contact">Создание контакта</string>
   <string name="enter_contact">Добавить контакт</string>
-  <string name="join_conference">Присоединиться к конференции</string>
-  <string name="dialog_title_join_conference">Присоединиться к конференции</string>
   <string name="delete_contact">Удалить контакт</string>
   <string name="view_contact_details">Посмотреть данные контакта</string>
   <string name="block_contact">Заблокировать контакт</string>
@@ -221,8 +211,6 @@
   <string name="select">Выбрать</string>
   <string name="contact_already_exists">Контакт уже существует</string>
   <string name="join">Присоединиться</string>
-  <string name="conference_address">Адрес конференции</string>
-  <string name="conference_address_example">room@conference.example.com/nick</string>
   <string name="save_as_bookmark">Сохранить закладку</string>
   <string name="delete_bookmark">Удалить закладку</string>
   <string name="bookmark_already_exists">Такая закладка уже существует</string>
@@ -265,8 +253,6 @@
   <string name="pref_allow_message_correction_summary">Позволить контактам редактировать сообщения</string>
   <string name="pref_expert_options">Расширенные настройки</string>
   <string name="pref_expert_options_summary">Пожалуйста, будьте осторожны с данными настройками</string>
-  <string name="title_activity_about">О Conversations</string>
-  <string name="pref_about_conversations_summary">Информация о билде и лицензировании</string>
   <string name="title_pref_quiet_hours">Тихие часы</string>
   <string name="title_pref_quiet_hours_start_time">Начало</string>
   <string name="title_pref_quiet_hours_end_time">Окончание</string>
@@ -277,8 +263,6 @@
   <string name="pref_use_indicate_received_summary">Если поддерживается, поступившие сообщения будут отмечены зелёной галочкой</string>
   <string name="pref_use_send_button_to_indicate_status_summary">Раскрасить кнопку отправить, указывая текущий статус собеседника</string>
   <string name="pref_expert_options_other">Другие</string>
-  <string name="pref_autojoin">Автоматически присоединяться к конференциям</string>
-  <string name="pref_autojoin_summary">Использовать флаг autojoin в закладках конференций</string>
   <string name="toast_message_omemo_fingerprint">OMEMO отпечаток скопирован в буфер обмена!</string>
   <string name="conference_banned">Вы заблокированы из этой конференции</string>
   <string name="conference_members_only">Эта конференция — только для участников</string>
@@ -297,19 +281,14 @@
   <string name="send_again">Отправить ещё раз</string>
   <string name="file_url">URL файла</string>
   <string name="url_copied_to_clipboard">Ссылка скопирована в буфер обмена</string>
-  <string name="jabber_id_copied_to_clipboard">Jabber ID скопирован в буфер обмена</string>
   <string name="scan_qr_code">Сканировать 2D штрихкод</string>
   <string name="show_qr_code">Показать 2D штрихкод</string>
   <string name="show_block_list">Показать чёрный список</string>
   <string name="account_details">Сведения об учётной записи</string>
   <string name="confirm">Подтвердить</string>
   <string name="try_again">Повторить</string>
-  <string name="conversations_foreground_service">Conversations</string>
   <string name="pref_keep_foreground_service">Оставить службу на переднем плане</string>
   <string name="pref_keep_foreground_service_summary">Не позволяет операционной системе закрыть ваше соединение</string>
-  <string name="pref_export_logs">Экспорт истории</string>
-  <string name="pref_export_logs_summary">Записать историю бесед на SD карту</string>
-  <string name="notification_export_logs_title">Запись истории на SD карту</string>
   <string name="choose_file">Выбрать файл</string>
   <string name="receiving_x_file">%1$s загружается (%2$d%% выполнено)</string>
   <string name="download_x_file">Загрузить %s</string>
@@ -355,22 +334,14 @@
   <string name="outcast">Заблокирован</string>
   <string name="member">Участник</string>
   <string name="advanced_mode">Расширенный режим</string>
-  <string name="grant_membership">Предоставить участие</string>
-  <string name="remove_membership">Отменить участие</string>
   <string name="grant_admin_privileges">Назначить администратором</string>
   <string name="remove_admin_privileges">Снять административные права</string>
   <string name="remove_from_room">Убрать из конференции</string>
   <string name="could_not_change_affiliation">Не удалось изменить принадлежность %s</string>
   <string name="ban_from_conference">Заблокировать из конференции</string>
-  <string name="removing_from_public_conference">Вы пытаетесь заблокировать %s из публичной конференции. Единственный способ — это  запретить доступ этому пользователю навсегда. </string>
   <string name="ban_now">Заблокировать</string>
   <string name="could_not_change_role">Не удалось сменить роль %s</string>
-  <string name="public_conference">Публичная конференция</string>
-  <string name="private_conference">Приватная конференция</string>
-  <string name="conference_options">Настройки конференции</string>
   <string name="members_only">Приватная</string>
-  <string name="non_anonymous">Неанонимная</string>
-  <string name="moderated">Модерируемая</string>
   <string name="you_are_not_participating">Вы не участвуете</string>
   <string name="modified_conference_options">Настройки конференции изменены!</string>
   <string name="could_not_modify_conference_options">Не удалось изменить настройки конференции</string>
@@ -389,7 +360,6 @@
   <string name="pdf_document">PDF-документ</string>
   <string name="apk">Приложение Android</string>
   <string name="vcard">Контакт</string>
-  <string name="touch_to_open_conversations">Коснитесь, чтобы открыть Conversations</string>
   <string name="avatar_has_been_published">Аватар загружен!</string>
   <string name="sending_x_file">Отправляется %s</string>
   <string name="offering_x_file">Предложен %s</string>
@@ -405,7 +375,6 @@
   <string name="no_application_found_to_display_location">Не найдено приложений для отображения местоположения</string>
   <string name="location">Местоположение</string>
   <string name="title_undo_swipe_out_conversation">Беседа окончена</string>
-  <string name="title_undo_swipe_out_muc">Покинул конференцию</string>
   <string name="pref_dont_trust_system_cas_title">Не доверять системным УЦ</string>
   <string name="pref_dont_trust_system_cas_summary">Все сертификаты должны быть подтверждены вручную</string>
   <string name="pref_remove_trusted_certificates_title">Удалить сертификаты</string>
@@ -426,7 +395,6 @@
   <string name="recently_used">Последнее выбранное</string>
   <string name="choose_quick_action">Выбрать быстрое действие</string>
   <string name="search_contacts">Поиск контактов</string>
-  <string name="search_groups">Поиск конференций</string>
   <string name="send_private_message">Отправить частное сообщение</string>
   <string name="user_has_left_conference">%1$s покинул конференцию!</string>
   <string name="username">Имя пользователя</string>
@@ -460,7 +428,6 @@
   <string name="captcha_required">Необходима проверка</string>
   <string name="captcha_hint">Введите текст с изображения</string>
   <string name="certificate_chain_is_not_trusted">Цепочка сертификата не доверена</string>
-  <string name="jid_does_not_match_certificate">Jabber ID не соответствует сертификату</string>
   <string name="action_renew_certificate">Обновить сертификат</string>
   <string name="error_fetching_omemo_key">Ошибка при получении OMEMO ключа!</string>
   <string name="verified_omemo_key_with_certificate">Проверен OMEMO ключ с сертификатом!</string>
@@ -488,7 +455,6 @@
   <string name="no_storage_permission">Conversations требуется доступ к внешнему хранилищу</string>
   <string name="no_camera_permission">Conversations требуется доступ к камере</string>
   <string name="sync_with_contacts">Синхронизировать с контактами</string>
-  <string name="sync_with_contacts_long">Conversations ожидает совпадения вашего XMPP ростера с вашими контактами для отображения их полных имен и аватаров.\n\nConversations только считает ваши контакты и сопоставит их локально без отправки их на ваш сервер.\n\nСейчас вы получите запрос на разрешение доступа к вашим контактам.</string>
   <string name="notify_on_all_messages">Все сообщения</string>
   <string name="notify_only_when_highlighted">Уведомлять только при упоминании</string>
   <string name="notify_never">Без уведомления</string>
@@ -509,8 +475,6 @@
   <string name="security_error_invalid_file_access">Ошибка безопасности: недействительный доступ к файлу</string>
   <string name="no_application_to_share_uri">Не найдено приложения для отправки</string>
   <string name="share_uri_with">Отправить URI…</string>
-  <string name="magic_create_text">Мы поможем Вам создать аккаунт на conversations.im¹.\nВыбрав conversations.im в качестве провайдера, вы сможете общаться с пользователями других провайдеров, сообщив им свой полный Jabber ID.</string>
-  <string name="your_full_jid_will_be">Ваш полный Jabber ID: %s</string>
   <string name="create_account">Создать аккаунт</string>
   <string name="use_own_provider">Использовать свой провайдер</string>
   <string name="pick_your_username">Выберите имя пользователя</string>
@@ -524,7 +488,6 @@
   <string name="device_does_not_support_battery_op">Ваше устройство не поддерживает отключение оптимизации энергопотребления</string>
   <string name="registration_please_wait">Регистрация не удалась: повторите попытку позднее</string>
   <string name="registration_password_too_weak">Регистрация не удалась: слишком слабый пароль</string>
-  <string name="dialog_title_create_conference">Создать конференцию</string>
   <string name="choose_participants">Выбрать участников</string>
   <string name="creating_conference">Создание конференции…</string>
   <string name="invite_again">Пригласить ещё раз</string>
@@ -652,7 +615,6 @@
   <string name="yesterday">Вчера</string>
   <string name="pref_validate_hostname">Проверить имя сервера с помощью DNSSEC</string>
   <string name="pref_validate_hostname_summary">Серверные сертификаты, содержащие проверенное имя хоста, считаются проверенными</string>
-  <string name="certificate_does_not_contain_jid">Сертификат не содержит Jabber ID</string>
   <string name="server_info_partial">частичный</string>
   <string name="attach_record_video">Записать видео</string>
   <string name="copy_to_clipboard">Скопировать в буфер обмена</string>
@@ -678,5 +640,4 @@
   <string name="share">Поделиться</string>
   <string name="please_wait">Пожалуйста, подождите…</string>
   <string name="search_messages">Поиск сообщений</string>
-  <string name="copy_jabber_id">Копировать Jabber ID</string>
 </resources>
